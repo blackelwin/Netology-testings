@@ -1,1 +1,3 @@
-# Netology-testings
+# DevOps-Netology
+
+## Начинаем изучение GIT
