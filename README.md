@@ -10,3 +10,4 @@
 
 будут игнорированы и не добавлены в коммит
 new line
+new line in pycharm
