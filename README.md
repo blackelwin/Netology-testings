@@ -1,37 +1,26 @@
 # DevOps-Netology
 
-## Домашнее задание «2.4. Инструменты Git»
+## Домашнее задание к занятию "3.1. Работа в терминале, лекция 1"
 
-1. Команда git show aefea -s. Результат: полный хэш aefead2207ef7e2aa5dc81a34aedf0cad4c32545, комментарий коммита Update CHANGELOG.md
-2. Команда git show 85024d3 -s. Результат: тег коммита v0.12.23
-3. Комнада git show --pretty=format:' %P' b8d720. Результат: 2 родителя, 56cd7859e05c36c06b56d013b55a252d0bb7e158 9ea88f22fc6269854151c571162c5bcf958bee2b
-4. Команда git log  v0.12.23..v0.12.24  --oneline. Результат: 
-   	33ff1c03bb (tag: v0.12.24) v0.12.24
-	b14b74c493 [Website] vmc provider links
-	3f235065b9 Update CHANGELOG.md
-	6ae64e247b registry: Fix panic when server is unreachable
-	5c619ca1ba website: Remove links to the getting started guide's old location
-	06275647e2 Update CHANGELOG.md
-	d5f9411f51 command: Fix bug when using terraform login on Windows
-	4b6d06cc5d Update CHANGELOG.md
-	dd01a35078 Update CHANGELOG.md
-	225466bc3e Cleanup after v0.12.23 release
-5. Команда git log -S'func providerSource' --oneline. Результат:
-	5af1e6234a main: Honor explicit provider_installation CLI config when present
-	8c928e8358 main: Consult local directories as potential mirrors of providers
-6. Команда git log -S'globalPluginDirs' --oneline. Результат:
-	125eb51dc4 Remove accidentally-committed binary
-	22c121df86 Bump compatibility version to 1.3.0 for terraform core release (#30988)
-	35a058fb3d main: configure credentials from the CLI config file
-	c0b1761096 prevent log output during init
-	8364383c35 Push plugin discovery down into command package
-7. Команда git log -S'synchronizedWriters' --oneline выдает результат: 
-	bdfea50cc8 remove unused
-	fd4f7eb0b9 remove prefixed io
-	5ac311e2a9 main: synchronize writes to VT100-faker on Windows
-   что очевидно, что в коммите 5ac311e2a9 функция synchronizedWriters была создана, в коммитах bdfea50cc8 и fd4f7eb0b9 была подредактирована.
-	Команда git log -S'synchronizedWriters' --pretty=format:'%h - %an %ae' выдает результат:
-		bdfea50cc8 - James Bardin j.bardin@gmail.com
-		fd4f7eb0b9 - James Bardin j.bardin@gmail.com
-		5ac311e2a9 - Martin Atkins mart@degeneration.co.uk
-	что соответствует тому, что Martin Atkins - автор, James Bardin - редактор
+1. ВМ выделены по умолчанию 1024мб оперативной памяти и 2 процессора
+2. Для задания оперативной памяти и процессоров используется командный блок config.vm.provider:
+	config.vm.provider "virtualbox" do |v|
+  		v.memory = 1024 #здесь задается объем оперативной памяти
+		v.cpus = 2 #здесь задается количество доступных процессоров
+	end
+3. Длина журнала History задается двумя командами: HISTSIZE и HISTFILESIZE:
+	HISTSIZE описан на 1120 строчке;
+	HISTFILESIZE описан на 1124 строчке;
+4. Директива ignoreboth это опция команды HISTCONTROL, которая определяет каким образом список команд сохраняются в журнале History. ignoreboth объединяет и использует директиву ignorespace, которая не сохраняет строки начинающиеся с пробела, и директиву ignoredups, которая не сохраняет строки, совпадающие с последней выполненной командой.
+5. {} - зарезервированные слова и должны появляться там, где зарезервированные слова должны быть опознаны. Используются для обозначения списка, группы команд. {} и список должны быть разделены пробелами или другими метасимволами оболочки. Описано на 344 строчке. 
+Так же на строчке 1499 описано, что для использования { вне списка, необходимо использовать "обратный слэш - \", чтобы оболочка не приняла как начало описания списка, группы команд.
+Так же на строчке 1464 описан механизм раскрытия скобок в командах, например цикличное выполнение команды с подстановкой.
+6. touch {1..10000}
+При выполнении команды touch {1..300000} выдает ошибку - слишком большой список аргументов.
+7. [[]] конструкция используется для обозначения выражений и на выходе выдает 1 или 0 в зависимости от условий выражения, удобно использовать в скриптах. 
+[[ -d /tmp ]] проверяет наличие папки /tmp
+8. mkdir /tmp/new_path_dir/
+   cp /bin/bash /tmp/new_path_dir/
+   PATH=/tmp/new_path_dir/:$PATH
+9. at используется для запуска одноразовых задач в указанное время;
+   batch используется для запуска одноразовых задач, когда загрузка системы падает ниже 0,8  
