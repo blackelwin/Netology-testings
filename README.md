@@ -36,7 +36,7 @@
    
    Проверка:
    	```
-   	sudo mv tmp tmp1
+   	sudo mv /tmp /tmp1
 	[[ -d /tmp ]]
 	echo $?
 	```
