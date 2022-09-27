@@ -33,18 +33,21 @@
    Проверка командой echo $? выдала 0 на CentOS 8 Stream (домашняя система) и на Vagrant Ubuntu 20.04, так как и там и там есть папки /tmp. 
    
    Проверка:
+   	```
    	sudo mv tmp tmp1
 	[[ -d /tmp ]]
 	echo $?
+	```
 	выдает 1
    Тестовый скрипт так же успешно отрабатывает:
+   	```
    	if [[ -d /tmp ]]
 	then
 		echo "Каталог существует"
 	else
 		echo "Каталог не существует"
 	fi
-
+	```
 8. mkdir /tmp/new_path_dir/
 
    cp /bin/bash /tmp/new_path_dir/
