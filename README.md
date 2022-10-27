@@ -3,16 +3,14 @@
 ## Домашнее задание к занятию "3.3. Операционные системы. Лекция 1"
 
 1. Создал `node_exporter.service` в котором поместил:
-   ```
-   [Unit]
+   ```[Unit]
 Description=node_exporter
 [Service]
 ExecStart=/home/vagrant/node_exporter-1.4.0.linux-amd64/node_exporter
 KillMode=process
 Restart=on-failure
 [Install]
-WantedBy=multi-user.target
-   ```
+WantedBy=multi-user.target```
 
    Созданный файл `node_exporter.service` переместил в `/etc/systemd/system/`:
 
