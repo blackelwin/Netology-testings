@@ -2,51 +2,112 @@
 
 ## Домашнее задание к занятию "3.3. Операционные системы. Лекция 1"
 
-1. `strace /bin/bash -c 'cd /tmp'` вызов, относящийся к `cd` - `chdir`.
-
-   `strace sh` и дальнейший ввод `cd /tmp` детально отображают, что произошло чтение команды `cd /tmp` и дальнейший вызов `chdir /tmp`.
-2. Изучив вывод `strace file`, обнаружил строки `openat` сигнализирующие об открытии файлов. Рассмотрев более детально, пришел к выводу, что база данных `file` находится в `/usr/share/misc/magic.mgc`. 
-
-   Строка, соответствующая выводу - `openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3`
-
-   `cat /usr/share/misc/magic.mgc` это подтверждает.
-
-   `file /usr/share/misc/magic.mgc` сообщает, что это всего лишь ярлык (символическая ссылка) к файлу magic.mgc в другой директории.
-3. На примере редактора VI - создал файл test.txt. Открыл его, хоткеем ctrl+Z отправил в фон, удалил файл `rm test.txt`. `bg` и `jobs` отображают фоновый файл test.txt.
-   `lsof | grep vi` нашел PID (3122) открытого файла (.test.txt.swp) и его дескриптор (4)
-
-   Перенаправил `''` через `/proc` - `echo '' >/proc/3122/fd/4`
-4. Зомби не занимают памяти (как процессы-сироты), но блокируют записи в таблице процессов, размер которой ограничен для каждого пользователя и системы в целом.Зомби не могут принимать сигналы, и поэтому их нельзя убрать с помощью утилиты или вызова kill. Убрать их может либо родительский процесс, либо его завершение.
-5. Без root доступа команда `dpkg -L bpfcc-tools | grep sbin/opensnoop
-/usr/sbin/opensnoop-bpfcc` не запустилась. После перехода в root первые вызовы:
+1. Создал `node_exporter.service` в котором поместил:
    ```
-     PID    COMM               FD ERR PATH
-     1      systemd            12   0 /proc/617/cgroup
-     862    vminfo              5   0 /var/run/utmp
-     632    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
-     632    dbus-daemon        21   0 /usr/share/dbus-1/system-services
-     632    dbus-daemon        -1   2 /lib/dbus-1/system-services
-     632    dbus-daemon        21   0 /var/lib/snapd/dbus-1/system-services/
+   [Unit]
+Description=node_exporter
+
+[Service]
+ExecStart=/home/vagrant/node_exporter-1.4.0.linux-amd64/node_exporter
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
    ```
-6. В man не нашел информацию об альтернативном вызове `uname -a` (ни в `man uname`, ни в `man proc`). В сети интернет нашел `Часть информации из структуры utsname может быть получена также через sysctl и через /proc/sys/kernel/{ostype, hostname, osrelease, version, domainname}`
-7. && - оператор AND, выполняющий команды последовательно и только в том случае, если предыдущая команда выполнена успешно (exit code=0).
 
-   ; - оператор, выполняющий команды последовательно без проверки результата выполнения предыдущей команды.
+   Созданный файл `node_exporter.service` переместил в `/etc/systemd/system/`:
 
-   set - устанавливает или убирает значения опций оболочки и позиционных параметров. `set -e` - сразу прерывает выполнение команды, если команда выполнена не успешно (exit code != 0), поэтому выполнение команды `set -e` совместно с оператором && бессмыслено, потому что при ошибке выполнение команд немедленно прекратится.
-8. e - незамедлительное прерывание выполнения, если выполнение команда закончится не успешно (не 0);
+   `mv node_exporter.service /etc/systemd/system/node_exporter.service`
 
-   u - считать неустановленные/не заданные параметры как ошибки;
+   Разрешил и включил вновь созданный `.service` файл:
 
-   x - выводить команды и их аргументы как они были выполнены;
+   `systemctl enable node_exporter.service`
 
-   o pipefail - вернуть код возврата команд, ненулевой при последней команды или 0 для успешного выполнения команд.
-9. `ps -o stat` выдал мне:
-     ```
-     STAT
-     S
-     R+
-     ```
+   `systemctl start node_exporter`
    
-    S - спящие, ожидающие действия для завершения
-    R - запущенные или ожидающие очереди запуска 
+   Node exporter корректно стартует, завершается и автоматически запускается после перезагрузки.
+2. CPU:
+
+   ```
+node_cpu_seconds_total{cpu="0",mode="idle"} 965.92
+node_cpu_seconds_total{cpu="1",mode="system"} 11.08
+node_cpu_seconds_total{cpu="1",mode="user"} 9.53
+process_cpu_seconds_total 0.74
+   ```
+   
+   Диск:
+
+   ```
+node_disk_io_now{device="sda"} 0
+node_disk_io_time_seconds_total{device="sda"} 8.8
+node_disk_read_bytes_total{device="sda"} 4.32633856e+08
+node_disk_written_bytes_total{device="sda"} 6.31808e+07
+   ```
+   
+   Память:
+
+   ```
+node_memory_MemAvailable_bytes 6.94157312e+08
+node_memory_MemFree_bytes 2.87158272e+08
+node_memory_MemTotal_bytes 1.024069632e+09
+node_memory_SwapFree_bytes 2.047864832e+09
+node_memory_SwapTotal_bytes 2.047864832e+09
+   ```
+   
+   Сеть:
+
+   ```
+node_network_receive_bytes_total{device="eth0"} 247118
+node_network_transmit_bytes_total{device="eth0"} 409572
+node_network_up{device="eth0"} 1
+   ```
+3. Готово. Дополнительно пробросил порты для node exporter
+4. Судя по выводу `dmesg` в виртуальной машине:
+
+   ```
+vagrant@vagrant:~$ dmesg | grep virtual
+[    0.001724] CPU MTRRs all blank - virtualized system.
+[    0.042056] Booting paravirtualized kernel on KVM
+[    0.207710] Performance Events: PMU not available due to virtualization, using software events only.
+[    2.733434] systemd[1]: Detected virtualization oracle.
+   ```
+   
+   можно догадаться, что система запущена на виртуальной машине.
+
+   На хосте вывод совсем другой:
+   
+   ```
+[    0.000000] Booting paravirtualized kernel on bare hardware
+[    4.473370] input: Acer WMI hotkeys as /devices/virtual/input/input13
+[    4.493124] SVM: LBR virtualization supported
+   ```
+5. `/sbin/sysctl -n fs.nr_open` - это системный лимит на количество открытых дескрипторов. Ему же соответствует файл `/proc/sys/fs/nr_open`
+
+   ulimit -a и ulimit -aH покажет текущие "мягкие" и жесткие лимиты для пользователя. При помощи ulimit можно настроить мягкие лимиты до пределов жестких.
+6. 
+   ```
+root@vagrant:/home/vagrant# unshare --fork --pid --mount-proc sleep 1h
+root@vagrant:/home/vagrant# ps | grep sleep
+   3174 pts/0    00:00:00 sleep
+root@vagrant:/home/vagrant# nsenter --target 3174 --pid --mount
+root@vagrant:/# ps
+    PID TTY          TIME CMD
+      1 pts/0    00:00:00 sleep
+      2 pts/0    00:00:00 bash
+     13 pts/0    00:00:00 ps
+
+   ```
+7. В сети нашел информацию, что это "форк-бомба"
+
+   `:(){ :|:& };:` - обьявление функции с именем ':' которая вызывает сама себя в двух экземплярах.
+
+   В `dmesg` обнаружил строку:
+
+   ```
+[ 5030.702324] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-19.scope
+   ```
+
+   Судя по всему, контроллер пидов отклоняет создание форков в связи с превышением количества (лимита).
+
+   `ulimit -u N' - ограничит число процессов до N для пользователя
