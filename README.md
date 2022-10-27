@@ -6,12 +6,10 @@
    ```
    [Unit]
 Description=node_exporter
-
 [Service]
 ExecStart=/home/vagrant/node_exporter-1.4.0.linux-amd64/node_exporter
 KillMode=process
 Restart=on-failure
-
 [Install]
 WantedBy=multi-user.target
    ```
