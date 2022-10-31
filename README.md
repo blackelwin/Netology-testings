@@ -26,6 +26,13 @@ WantedBy=multi-user.target
    
    Node exporter корректно стартует, завершается и автоматически запускается после перезагрузки.
    
+   По замечанию в проверке ДЗ: 
+   
+   Опции запуска передаются в `ExecStart`, например так:
+   
+   `ExecStart=/home/vagrant/node_exporter-1.4.0.linux-amd64/node_exporter --collector.disable-defaults --collector.cpu`
+   
+   где, согласно официальному man, `--collector.disable-defaults` - отключает использование дефолтных коллекторов, `--collector.cpu` включает использование коллектора cpu
 2. CPU:
 ```
 node_cpu_seconds_total{cpu="0",mode="idle"} 965.92
