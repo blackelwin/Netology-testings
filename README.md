@@ -36,6 +36,18 @@ WantedBy=multi-user.target
    
    `--collector.cpu` включает использование коллектора cpu.
    
+   По второму замечанию в проверке ДЗ:
+   
+   Опции запуска можно передать через внешний файл в:
+   
+   ```
+   [Service]
+   EnvironmentFile=-/home/vagrant/node.conf
+   ExecStart=/home/vagrant/node_exporter-1.4.0.linux-amd64/node_exporter $Some_opt
+   ```
+   а во внешнем файле опции указываются так:
+   `Some_opt="--collector.disable-defaults --collector.cpu"`
+   
 2. CPU:
 ```
 node_cpu_seconds_total{cpu="0",mode="idle"} 965.92
