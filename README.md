@@ -1,146 +1,119 @@
 # DevOps-Netology
 
-## Домашнее задание к занятию "3.6. Компьютерные сети. Лекция 1"
+## Домашнее задание к занятию "3.7. Компьютерные сети.Лекция 2"
 
-1. Готово:
+1. В windows стандартная команда в cmd -  `ipconfig`. В linux - `ifconfig` и `ip a` (ifconfig в некоторых сборках нужно устанавливать отдельно):
 ```
-vagrant@sysadm-fs:~$ telnet stackoverflow.com 80
-Trying 151.101.193.69...
-Connected to stackoverflow.com.
-Escape character is '^]'.
+vagrant@sysadm-fs:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:a2:6b:fd brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 86387sec preferred_lft 86387sec
+    inet6 fe80::a00:27ff:fea2:6bfd/64 scope link 
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:27:6b:96 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.3/24 brd 192.168.56.255 scope global dynamic eth1
+       valid_lft 587sec preferred_lft 587sec
+    inet6 fe80::a00:27ff:fe27:6b96/64 scope link 
+       valid_lft forever preferred_lft forever
+vagrant@sysadm-fs:~$ ifconfig
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::a00:27ff:fea2:6bfd  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:a2:6b:fd  txqueuelen 1000  (Ethernet)
+        RX packets 820  bytes 101409 (101.4 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 691  bytes 114812 (114.8 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-GET /questions HTTP/1.0
-HOST: stackoverflow.com
+eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.56.3  netmask 255.255.255.0  broadcast 192.168.56.255
+        inet6 fe80::a00:27ff:fe27:6b96  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:27:6b:96  txqueuelen 1000  (Ethernet)
+        RX packets 8  bytes 3660 (3.6 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 23  bytes 3629 (3.6 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-HTTP/1.1 403 Forbidden
-Connection: close
-Content-Length: 1920
-Server: Varnish
-Retry-After: 0
-Content-Type: text/html
-Accept-Ranges: bytes
-Date: Wed, 07 Dec 2022 02:15:30 GMT
-Via: 1.1 varnish
-X-Served-By: cache-fra-eddf8230139-FRA
-X-Cache: MISS
-X-Cache-Hits: 0
-X-Timer: S1670379330.140938,VS0,VE1
-X-DNS-Prefetch-Control: off
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
+2. Для распознавания соседних устройств в сети используется протокол LLDP (CDP - cisco). В linux есть пакет lldpd, после установки которого командой `lldpctl` можно посмотреть информацию о соседних устройствах.2. Для распознавания соседних устройств в сети используется протокол LLDP (CDP - cisco). В linux есть пакет lldpd, после установки которого командой `lldpctl` можно посмотреть информацию о соседних устройствах.
 
-Код HTTP 403 - client error, если более точно - доступ запрещен
+3. Для разделения сетей на подсети используется технология VLAN. Вопрос считаю крайне некорректным и подачу материала тоже. Разделением на подсети занимается L3 коммутаторы и маршрутизаторы, это уровень L3 и лишь там в заголовках пакетов появляется IP адреса и разбитие адресов на подсети. На уровне L2 - не пакеты, а кадры, в заголовках которых MAC адреса. Коммутаторы L2 работают лишь в одном широковещательном домене и лишь с MAC адресами, IP адреса им безразличны, соответственно и безразлично разбиение на подсети.
 
-2. Готово:
-
-Был получен код 200 - success (успешное подключение)
-
-Дольше всего обрабатывался запрос на сервере `waiting for server response` большей расшифровки не увидел.
-
-3. Мой IP: 80.83.235.79
-
-4. Готово:
+В Linux есть много различных пакетов, например `vlan`, но так же это можно реализовать стандартными средствами. Важна поддержка сетевой карты и установленного драйвера. Стандартными средствами, например в Ubuntu, редактируется файл `/etc/network/interfaces`, где физический интерфейс, например `eth0` "делится" на subinterface (схожее с cisco) eth0.2. В файл `/etc/network/interfaces` добавляется дополнительно информация о сабинтерфейсе:
 ```
-descr:          Mobile TeleSystems, PJSC, MR DV
-origin:         AS8359
+auto eth0.2
+iface eth0.2 inet static
+address 192.168.1.2
+netmask 255.255.255.0
+vlan-raw-device eth0
 ```
-5. Публичный сервер DNS google 8.8.8.8 у меня заблокирован. Но вот вывод с 1.1.1.1 (CloudFlare):
+После файл сохраняется и необходимо перезагрузить сеть командой `systemctl restart network`
+
+4. mode=0 (balance-rr)
+Этот режим используется по-умолчанию, если в настройках не указано другое. balance-rr обеспечивает балансировку нагрузки и отказоустойчивость. В данном режиме пакеты отправляются "по кругу" от первого интерфейса к последнему и сначала. Если выходит из строя один из интерфейсов, пакеты отправляются на остальные оставшиеся.При подключении портов к разным коммутаторам, требует их настройки.
+
+mode=1 (active-backup)
+При active-backup один интерфейс работает в активном режиме, остальные в ожидающем. Если активный падает, управление передается одному из ожидающих. Не требует поддержки данной функциональности от коммутатора.
+
+mode=2 (balance-xor)
+Передача пакетов распределяется между объединенными интерфейсами по формуле ((MAC-адрес источника) XOR (MAC-адрес получателя)) % число интерфейсов. Один и тот же интерфейс работает с определённым получателем. Режим даёт балансировку нагрузки и отказоустойчивость.
+
+mode=3 (broadcast)
+Происходит передача во все объединенные интерфейсы, обеспечивая отказоустойчивость.
+
+mode=4 (802.3ad)
+Это динамическое объединение портов. В данном режиме можно получить значительное увеличение пропускной способности как входящего так и исходящего трафика, используя все объединенные интерфейсы. Требует поддержки режима от коммутатора, а так же (иногда) дополнительную настройку коммутатора.
+
+mode=5 (balance-tlb)
+Адаптивная балансировка нагрузки. При balance-tlb входящий трафик получается только активным интерфейсом, исходящий - распределяется в зависимости от текущей загрузки каждого интерфейса. Обеспечивается отказоустойчивость и распределение нагрузки исходящего трафика. Не требует специальной поддержки коммутатора.
+
+mode=6 (balance-alb)
+Адаптивная балансировка нагрузки (более совершенная). Обеспечивает балансировку нагрузки как исходящего (TLB, transmit load balancing), так и входящего трафика (для IPv4 через ARP). Не требует специальной поддержки коммутатором, но требует возможности изменять MAC-адрес устройства.
+
+Для настройки агрегации портов можно использовать пакет ifenslave. Пример настройки файла `/etc/network/interfaces`:
 ```
-vagrant@sysadm-fs:~$ traceroute -An 1.1.1.1
-traceroute to 1.1.1.1 (1.1.1.1), 30 hops max, 60 byte packets
- 7  82.204.206.193 [AS8359]  204.857 ms  207.202 ms  206.283 ms
- 8  212.248.28.245 [AS8359]  206.593 ms  208.443 ms  207.804 ms
- 9  212.248.28.246 [AS8359]  206.119 ms  207.473 ms  208.000 ms
-10  212.188.31.24 [AS8359]  206.657 ms  209.940 ms  208.765 ms
-11  195.34.50.182 [AS8359]  208.427 ms  209.004 ms  206.097 ms
-12  * * *
-13  * * *
-14  * * *
-15  * * *
-16  * * *
-17  1.1.1.1 [AS13335]  204.807 ms * *
+auto bond0 eth0 eth1
+iface bond0 inet static
+        address 10.0.0.11
+        netmask 255.255.255.0
+        gateway 10.0.0.254
+        bond-slaves eth0 eth1
+        bond-mode balance-alb
+bond-miimon 100
+bond-downdelay 200
+        bond-updelay 200
 ```
-Первые 5 строк вывода удалил - там конфиденциальная информация о сети, не могу раскрывать.
+5. Всего в маске /29 8 IP адресов, из которых можно использовать 6. Всего можно получить 32 подсети с маской /29 из сети с маской /24. Примеры:
 
-6. Готово:
-```
- 7. AS8359   82.204.206.193                                                                                 0.0%    34  128.8 202.3 126.6 355.1  78.4
- 8. AS8359   212.248.28.245                                                                                 0.0%    34  127.7 195.1 126.2 335.1  68.2
- 9. AS8359   212.248.28.246                                                                                 0.0%    34  125.9 201.4 125.9 350.5  74.9
-10. AS8359   212.188.31.24                                                                                  0.0%    34  129.0 202.4 126.4 357.3  76.1
-11. AS8359   195.34.50.182                                                                                  0.0%    34  131.4 205.2 126.4 352.4  78.9
-12. AS8359   212.188.33.197                                                                                 0.0%    34  131.7 200.6 127.5 357.4  74.8
-13. AS13335  1.1.1.1                                                                                        0.0%    34  130.5 193.0 126.7 340.6  66.2
-```
-Опять же не могу детально раскрыть всю информацию.
+10.10.10.0/29 - первая подсеть
 
-7. Готово:
-```
-vagrant@sysadm-fs:~$ dig dns.google
+10.10.10.8/29 - вторая подсеть
 
-; <<>> DiG 9.16.1-Ubuntu <<>> dns.google
-;; global options: +cmd
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 23781
-;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+10.10.10.16/29 - третья подсеть
 
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 65494
-;; QUESTION SECTION:
-;dns.google.			IN	A
+10.10.10.24/29 - четвертая подсеть и так далее.
 
-;; ANSWER SECTION:
-dns.google.		808	IN	A	8.8.8.8
-dns.google.		808	IN	A	8.8.4.4
+6. Для объединения можно использовать выделенный для Carrier-Grade NAT диапазон, IANA он разрешен и для использования в частных сетях. Пример сети:
 
-;; Query time: 235 msec
-;; SERVER: 127.0.0.53#53(127.0.0.53)
-;; WHEN: Wed Dec 07 03:15:06 UTC 2022
-;; MSG SIZE  rcvd: 71
-```
-В секции Answer описаны A записи - 8.8.8.8 и 8.8.4.4
+100.64.0.0/27 - 32 всего адреса, доступных 30 или же 100.64.0.26/ - 64 всего адреса, 62 доступно.
 
-8. Готово:
-```
-vagrant@sysadm-fs:~$ dig -x 8.8.8.8
+Диапазон в 40-50 сделать не получится, ограничено маской подсети, не корректная постановка вопроса, либо же ограничить построенную на /26 маске сеть средствами DHCP сервера и/или ACL маршрутизатора/коммутатора.
 
-; <<>> DiG 9.16.1-Ubuntu <<>> -x 8.8.8.8
-;; global options: +cmd
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21031
-;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+7. В windows cmd это команда `arp -a`. В Linux - `ip neigh`. Чтобы очистить всю ARP таблицу можно использовать команду `ip neigh flush all`, а какое то конкретное устройство - `ip neigh flush dev <MAC>`, либо IP - `ip neigh flush to <IP-addr>`
 
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 65494
-;; QUESTION SECTION:
-;8.8.8.8.in-addr.arpa.		IN	PTR
-
-;; ANSWER SECTION:
-8.8.8.8.in-addr.arpa.	69499	IN	PTR	dns.google.
-
-;; Query time: 135 msec
-;; SERVER: 127.0.0.53#53(127.0.0.53)
-;; WHEN: Wed Dec 07 03:20:32 UTC 2022
-;; MSG SIZE  rcvd: 73
-
-vagrant@sysadm-fs:~$ dig -x 8.8.4.4
-
-; <<>> DiG 9.16.1-Ubuntu <<>> -x 8.8.4.4
-;; global options: +cmd
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 31747
-;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
-
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 65494
-;; QUESTION SECTION:
-;4.4.8.8.in-addr.arpa.		IN	PTR
-
-;; ANSWER SECTION:
-4.4.8.8.in-addr.arpa.	71958	IN	PTR	dns.google.
-
-;; Query time: 303 msec
-;; SERVER: 127.0.0.53#53(127.0.0.53)
-;; WHEN: Wed Dec 07 03:20:40 UTC 2022
-;; MSG SIZE  rcvd: 73
-```
-DNS у обоих адресов (8.8.8.8 и 8.8.4.4) - dns.google 
