@@ -1,119 +1,120 @@
 # DevOps-Netology
 
-## Домашнее задание к занятию "3.7. Компьютерные сети.Лекция 2"
+## Домашнее задание к занятию "3.8. Компьютерные сети, лекция 3"
 
-1. В windows стандартная команда в cmd -  `ipconfig`. В linux - `ifconfig` и `ip a` (ifconfig в некоторых сборках нужно устанавливать отдельно):
+1. Готово:
 ```
-vagrant@sysadm-fs:~$ ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:a2:6b:fd brd ff:ff:ff:ff:ff:ff
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
-       valid_lft 86387sec preferred_lft 86387sec
-    inet6 fe80::a00:27ff:fea2:6bfd/64 scope link 
-       valid_lft forever preferred_lft forever
-3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:27:6b:96 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.56.3/24 brd 192.168.56.255 scope global dynamic eth1
-       valid_lft 587sec preferred_lft 587sec
-    inet6 fe80::a00:27ff:fe27:6b96/64 scope link 
-       valid_lft forever preferred_lft forever
-vagrant@sysadm-fs:~$ ifconfig
-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
-        inet6 fe80::a00:27ff:fea2:6bfd  prefixlen 64  scopeid 0x20<link>
-        ether 08:00:27:a2:6b:fd  txqueuelen 1000  (Ethernet)
-        RX packets 820  bytes 101409 (101.4 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 691  bytes 114812 (114.8 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.56.3  netmask 255.255.255.0  broadcast 192.168.56.255
-        inet6 fe80::a00:27ff:fe27:6b96  prefixlen 64  scopeid 0x20<link>
-        ether 08:00:27:27:6b:96  txqueuelen 1000  (Ethernet)
-        RX packets 8  bytes 3660 (3.6 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 23  bytes 3629 (3.6 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>
-        loop  txqueuelen 1000  (Local Loopback)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+route-views>show ip route 80.83.235.79   
+Routing entry for 80.83.235.0/24
+  Known via "bgp 6447", distance 20, metric 0
+  Tag 3303, type external
+  Last update from 217.192.89.50 3w6d ago
+  Routing Descriptor Blocks:
+  * 217.192.89.50, from 217.192.89.50, 3w6d ago
+      Route metric is 0, traffic share count is 1
+      AS Hops 2
+      Route tag 3303
+      MPLS label: none
+route-views>show bgp 80.83.235.79     
+BGP routing table entry for 80.83.235.0/24, version 2540216420
+Paths: (22 available, best #20, table default)
+  Not advertised to any peer
+  Refresh Epoch 1
+  7660 4635 8359
+    203.181.248.168 from 203.181.248.168 (203.181.248.168)
+      Origin IGP, localpref 100, valid, external
+      Community: 0:3216 0:4635 0:12389 0:20485 0:31133 4635:4635 4635:65022 7660:6 7660:9003 8359:5500 8359:55638
+      unknown transitive attribute: flag 0xE0 type 0x20 length 0x24
+        value 0000 121B 0000 0000 0000 0000 0000 121B
+              0000 0001 0000 0000 0000 121B 0000 0001
+              0000 FDFE 
+      path 7FE0F6220BB0 RPKI State not found
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3561 3910 3356 8359
+    206.24.210.80 from 206.24.210.80 (206.24.210.80)
+      Origin IGP, localpref 100, valid, external
+      path 7FE0C72188D0 RPKI State not found
+      rx pathid: 0, tx pathid: 0
 ```
-2. Для распознавания соседних устройств в сети используется протокол LLDP (CDP - cisco). В linux есть пакет lldpd, после установки которого командой `lldpctl` можно посмотреть информацию о соседних устройствах.2. Для распознавания соседних устройств в сети используется протокол LLDP (CDP - cisco). В linux есть пакет lldpd, после установки которого командой `lldpctl` можно посмотреть информацию о соседних устройствах.
+2. Готово:
+Был поднят dummy интерфейс: 
 
-3. Для разделения сетей на подсети используется технология VLAN. Вопрос считаю крайне некорректным и подачу материала тоже. Разделением на подсети занимается L3 коммутаторы и маршрутизаторы, это уровень L3 и лишь там в заголовках пакетов появляется IP адреса и разбитие адресов на подсети. На уровне L2 - не пакеты, а кадры, в заголовках которых MAC адреса. Коммутаторы L2 работают лишь в одном широковещательном домене и лишь с MAC адресами, IP адреса им безразличны, соответственно и безразлично разбиение на подсети.
+`sudo ip link add name dummy0 type dummy` 
 
-В Linux есть много различных пакетов, например `vlan`, но так же это можно реализовать стандартными средствами. Важна поддержка сетевой карты и установленного драйвера. Стандартными средствами, например в Ubuntu, редактируется файл `/etc/network/interfaces`, где физический интерфейс, например `eth0` "делится" на subinterface (схожее с cisco) eth0.2. В файл `/etc/network/interfaces` добавляется дополнительно информация о сабинтерфейсе:
+и созданы 2 файла: 
+
+`sudo touch /etc/systemd/network/dummy0.netdev`
+
+`sudo touch /etc/systemd/network/dummy0.network`
+
+с таким наполнением `dummy0.network`:
 ```
-auto eth0.2
-iface eth0.2 inet static
-address 192.168.1.2
-netmask 255.255.255.0
-vlan-raw-device eth0
+[Match]
+Name=dummy0
+
+[Network]
+Address=10.2.2.2
+Mask=255.255.255.255
 ```
-После файл сохраняется и необходимо перезагрузить сеть командой `systemctl restart network`
-
-4. mode=0 (balance-rr)
-Этот режим используется по-умолчанию, если в настройках не указано другое. balance-rr обеспечивает балансировку нагрузки и отказоустойчивость. В данном режиме пакеты отправляются "по кругу" от первого интерфейса к последнему и сначала. Если выходит из строя один из интерфейсов, пакеты отправляются на остальные оставшиеся.При подключении портов к разным коммутаторам, требует их настройки.
-
-mode=1 (active-backup)
-При active-backup один интерфейс работает в активном режиме, остальные в ожидающем. Если активный падает, управление передается одному из ожидающих. Не требует поддержки данной функциональности от коммутатора.
-
-mode=2 (balance-xor)
-Передача пакетов распределяется между объединенными интерфейсами по формуле ((MAC-адрес источника) XOR (MAC-адрес получателя)) % число интерфейсов. Один и тот же интерфейс работает с определённым получателем. Режим даёт балансировку нагрузки и отказоустойчивость.
-
-mode=3 (broadcast)
-Происходит передача во все объединенные интерфейсы, обеспечивая отказоустойчивость.
-
-mode=4 (802.3ad)
-Это динамическое объединение портов. В данном режиме можно получить значительное увеличение пропускной способности как входящего так и исходящего трафика, используя все объединенные интерфейсы. Требует поддержки режима от коммутатора, а так же (иногда) дополнительную настройку коммутатора.
-
-mode=5 (balance-tlb)
-Адаптивная балансировка нагрузки. При balance-tlb входящий трафик получается только активным интерфейсом, исходящий - распределяется в зависимости от текущей загрузки каждого интерфейса. Обеспечивается отказоустойчивость и распределение нагрузки исходящего трафика. Не требует специальной поддержки коммутатора.
-
-mode=6 (balance-alb)
-Адаптивная балансировка нагрузки (более совершенная). Обеспечивает балансировку нагрузки как исходящего (TLB, transmit load balancing), так и входящего трафика (для IPv4 через ARP). Не требует специальной поддержки коммутатором, но требует возможности изменять MAC-адрес устройства.
-
-Для настройки агрегации портов можно использовать пакет ifenslave. Пример настройки файла `/etc/network/interfaces`:
+и таким наполнением `dummy0.netdev`:
 ```
-auto bond0 eth0 eth1
-iface bond0 inet static
-        address 10.0.0.11
-        netmask 255.255.255.0
-        gateway 10.0.0.254
-        bond-slaves eth0 eth1
-        bond-mode balance-alb
-bond-miimon 100
-bond-downdelay 200
-        bond-updelay 200
+[NetDev]
+Name=dummy0
+Kind=dummy
 ```
-5. Всего в маске /29 8 IP адресов, из которых можно использовать 6. Всего можно получить 32 подсети с маской /29 из сети с маской /24. Примеры:
+после была перезагружена сеть `sudo systemctl restart systemd-networkd`
 
-10.10.10.0/29 - первая подсеть
+и добавлены статические маршруты:
 
-10.10.10.8/29 - вторая подсеть
+`route add -net 10.0.2.0/24 dummy0`
 
-10.10.10.16/29 - третья подсеть
+`route add -net 10.2.0.0/16 dummy0`
 
-10.10.10.24/29 - четвертая подсеть и так далее.
+`route add -net 192.168.192.0/24 dummy0`
 
-6. Для объединения можно использовать выделенный для Carrier-Grade NAT диапазон, IANA он разрешен и для использования в частных сетях. Пример сети:
-
-100.64.0.0/27 - 32 всего адреса, доступных 30 или же 100.64.0.26/ - 64 всего адреса, 62 доступно.
-
-Диапазон в 40-50 сделать не получится, ограничено маской подсети, не корректная постановка вопроса, либо же ограничить построенную на /26 маске сеть средствами DHCP сервера и/или ACL маршрутизатора/коммутатора.
-
-7. В windows cmd это команда `arp -a`. В Linux - `ip neigh`. Чтобы очистить всю ARP таблицу можно использовать команду `ip neigh flush all`, а какое то конкретное устройство - `ip neigh flush dev <MAC>`, либо IP - `ip neigh flush to <IP-addr>`
-
+Ниже вывод таблицы маршрутизации:
+```
+vagrant@sysadm-fs:~$ ip route
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100 
+10.0.0.0/8 dev dummy0 proto kernel scope link src 10.2.2.2 
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100 
+10.2.0.0/16 dev dummy0 scope link 
+192.168.56.0/24 dev eth1 proto kernel scope link src 192.168.56.3 
+192.168.192.0/24 dev dummy0 scope link 
+```
+3. Готово:
+```
+[Vagrant@Vagrant]$ sudo netstat -pnlt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 127.0.0.1:2222          0.0.0.0:*               LISTEN      53314/VBoxHeadless  
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      1/systemd           
+tcp        0      0 192.168.122.1:53        0.0.0.0:*               LISTEN      5806/dnsmasq        
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1448/sshd           
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      1446/cupsd          
+tcp        0      0 0.0.0.0:7070            0.0.0.0:*               LISTEN      5122/anydesk        
+tcp6       0      0 :::111                  :::*                    LISTEN      1/systemd           
+tcp6       0      0 :::22                   :::*                    LISTEN      1448/sshd           
+tcp6       0      0 ::1:631                 :::*                    LISTEN      1446/cupsd          
+```
+4. Готово:
+```
+[Vagrant@Vagrant]$ sudo netstat -pnlu
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           1/systemd           
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           1102/chronyd        
+udp        0      0 0.0.0.0:36167           0.0.0.0:*                           1068/avahi-daemon:  
+udp        0      0 224.0.0.251:5353        0.0.0.0:*                           11430/chrome        
+udp        0      0 224.0.0.251:5353        0.0.0.0:*                           11430/chrome        
+udp        0      0 224.0.0.251:5353        0.0.0.0:*                           11477/chrome --type 
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           1068/avahi-daemon:  
+udp        0      0 192.168.122.1:53        0.0.0.0:*                           5806/dnsmasq        
+udp        0      0 0.0.0.0:67              0.0.0.0:*                           5806/dnsmasq        
+udp6       0      0 :::111                  :::*                                1/systemd           
+udp6       0      0 ::1:323                 :::*                                1102/chronyd        
+udp6       0      0 :::41371                :::*                                1068/avahi-daemon:  
+udp6       0      0 :::5353                 :::*                                1068/avahi-daemon:  
+```
