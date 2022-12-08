@@ -60,6 +60,7 @@ vagrant@sysadm-fs:~$ mv new1.pub .ssh/new2.pub
 vagrant@sysadm-fs:~$ mkdir -p ~/.ssh && chmod 700 ~/.ssh
 vagrant@sysadm-fs:~$ touch ~/.ssh/config && chmod 600 ~/.ssh/config
 ```
+```
 Host my_serv  
 HostName 192.168.56.1
 IdentityFile ~/.ssh/new2.key
